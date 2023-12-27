@@ -3,7 +3,7 @@ use std::net::SocketAddr;
 use axum::{
     routing::get,
     Router, response::{IntoResponse, Json},
-    debug_handler,
+    debug_handler, extract::Path,
 };
 use anyhow::Result;
 use reqwest::StatusCode;
@@ -38,7 +38,7 @@ struct Item {
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/", get(content));
+    let app = Router::new().route("/:query", get(content));
 
     let addr = SocketAddr::from(([0,0,0,0], 9341));
     axum::Server::bind(&addr)
@@ -48,8 +48,8 @@ async fn main() {
 }
 
 #[debug_handler]
-async fn content() -> impl IntoResponse {
-    let items = gather_items_json("Evangelion").await;
+async fn content(Path(query):Path<String>) -> impl IntoResponse {
+    let items = gather_items_json(&query).await;
     match items {
         Ok(content) => (StatusCode::OK, Json(content)),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(e.to_string()))
@@ -57,9 +57,10 @@ async fn content() -> impl IntoResponse {
 }
 
 async fn gather_items_json(search_query: &str) -> Result<String> {
-    let contents = query_jackett("Evangelion").await?;
-    let items = process_xml(&contents);
-    serde_json::to_string(&items)
+    let contents = query_jackett(search_query).await?;
+    let items = process_xml(&contents)?;
+    let str = serde_json::to_string(&items)?;
+    Ok(str)
 }
 
 fn format_query_url(search_query: &str) -> String {
@@ -74,5 +75,5 @@ async fn query_jackett(search_query: &str) -> Result<String> {
 
 fn process_xml(xml: &str) -> Result<Vec<Item>> {
     let rss: Rss = from_str(xml.trim())?;
-    rss.channel.item
+    Ok(rss.channel.item)
 }
