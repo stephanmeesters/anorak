@@ -1,20 +1,18 @@
-use crate::config::TRANSMISSION_URL;
+use crate::{app_error::AppError, config::TRANSMISSION_URL};
 use crate::models;
 
 use anyhow::{Context, Result};
+use axum::debug_handler;
 use axum::{
     extract::Path,
-    http::StatusCode,
-    response::{IntoResponse, Json},
+    response::IntoResponse,
 };
 use reqwest::header::CONTENT_TYPE;
 
-pub async fn endpoint(Path(magnet): Path<String>) -> impl IntoResponse {
-    let result = send_transmission_impl(magnet).await;
-    match result {
-        Ok(message) => (StatusCode::OK, Json(message)),
-        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(e.to_string())),
-    }
+#[debug_handler]
+pub async fn endpoint(Path(magnet): Path<String>) -> Result<impl IntoResponse, AppError>{
+    let result = send_transmission_impl(magnet).await?;
+    Ok(result)
 }
 
 async fn send_transmission_impl(magnet: String) -> Result<String> {

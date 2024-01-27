@@ -1,12 +1,13 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <script src="https://unpkg.com/htmx.org@1.9.4/dist/htmx.min.js" />
+    <script src="https://unpkg.com/htmx.org@1.9.4/dist/htmx.min.js"></script>
 </head>
 
 <body>
     Hello
-    <form hx-post="/test" hx-swap="innerHTML" hx-trigger="submit">
+    <form hx-get="/test" hx-swap="innerHTML" hx-trigger="submit">
         <button type="submit">Submit</button>
     </form>
 </body>

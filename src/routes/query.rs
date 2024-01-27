@@ -1,21 +1,18 @@
 use crate::models;
 use crate::config::{JACKETT_URL, JACKETT_APIKEY};
+use crate::app_error::AppError;
 
 use axum::{
-    response::{IntoResponse, Json},
+    response::{IntoResponse},
     debug_handler, extract::Path,
-    http::StatusCode
 };
 use anyhow::Result;
 use serde_xml_rs::from_str;
 
 #[debug_handler]
-pub async fn endpoint(Path(query):Path<String>) -> impl IntoResponse {
-    let items = gather_items_json(&query).await;
-    match items {
-        Ok(content) => (StatusCode::OK, Json(content)),
-        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(e.to_string()))
-    }
+pub async fn endpoint(Path(query):Path<String>) -> Result<impl IntoResponse, AppError> {
+    let items = gather_items_json(&query).await?;
+    Ok(items)
 }
 
 async fn gather_items_json(search_query: &str) -> Result<String> {

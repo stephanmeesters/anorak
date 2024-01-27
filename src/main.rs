@@ -2,8 +2,23 @@ mod config;
 mod models;
 mod routes;
 
-use axum::{response::{Html, IntoResponse}, routing::get, Router};
+mod app_error;
+use app_error::AppError;
+
+use axum::{
+    response::{Html, IntoResponse},
+    routing::get,
+    Router,
+};
+use minijinja::{context, path_loader, Environment};
+use once_cell::sync::Lazy;
 use tower_http::services::ServeDir;
+
+static ENV: Lazy<Environment<'static>> = Lazy::new(|| {
+    let mut env = Environment::new();
+    env.set_loader(path_loader("assets"));
+    env
+});
 
 #[tokio::main]
 pub async fn main() {
@@ -23,6 +38,8 @@ pub async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-pub async fn endpoint() -> impl IntoResponse {
-    Html("<h1>Bla</h1>")
+async fn endpoint() -> Result<impl IntoResponse, AppError> {
+    let tmpl = ENV.get_template("template.html")?;
+    let result = Html(tmpl.render(context!(name => "John"))?);
+    Ok(result)
 }
