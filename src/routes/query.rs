@@ -3,10 +3,10 @@ use crate::config::{JACKETT_URL, JACKETT_APIKEY};
 
 use axum::{
     response::{IntoResponse, Json},
-    debug_handler, extract::Path
+    debug_handler, extract::Path,
+    http::StatusCode
 };
 use anyhow::Result;
-use reqwest::StatusCode;
 use serde_xml_rs::from_str;
 
 #[debug_handler]

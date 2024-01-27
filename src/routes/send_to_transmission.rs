@@ -4,10 +4,10 @@ use crate::models;
 use anyhow::{Context, Result};
 use axum::{
     extract::Path,
-    http::{HeaderMap, HeaderValue},
+    http::StatusCode,
     response::{IntoResponse, Json},
 };
-use reqwest::{header::CONTENT_TYPE, StatusCode};
+use reqwest::header::CONTENT_TYPE;
 
 pub async fn endpoint(Path(magnet): Path<String>) -> impl IntoResponse {
     let result = send_transmission_impl(magnet).await;
@@ -31,12 +31,12 @@ async fn send_transmission_impl(magnet: String) -> Result<String> {
             .context("Transmission session id not found")?
             .to_str()?;
 
-        let mut headers = HeaderMap::new();
+        let mut headers = reqwest::header::HeaderMap::new();
         headers.insert(
             "X-Transmission-Session-Id",
-            HeaderValue::from_str(session_id)?,
+            reqwest::header::HeaderValue::from_str(session_id)?,
         );
-        headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
+        headers.insert(CONTENT_TYPE, reqwest::header::HeaderValue::from_static("application/json"));
 
         let response = client
             .post(TRANSMISSION_URL)
