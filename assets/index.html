@@ -6,8 +6,8 @@
 </head>
 
 <body>
-    Hello
-    <form hx-get="/test" hx-swap="innerHTML" hx-trigger="submit">
+    <form hx-post="/query/" hx-swap="innerHTML" hx-trigger="submit">
+        <input placeholder="Search" name="search_term" id="search_term"></input>
         <button type="submit">Submit</button>
     </form>
 </body>

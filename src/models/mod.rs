@@ -26,11 +26,16 @@ pub struct Item {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TransmissionAddTorrent {
     pub method: String,
-    pub arguments: AddTorrentArguments,
+    // pub arguments: AddTorrentArguments,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AddTorrentArguments {
     pub paused: bool,
     pub filename: String,
+}
+
+#[derive(Deserialize)]
+pub struct Query {
+    pub search_term: String,
 }

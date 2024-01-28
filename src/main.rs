@@ -8,7 +8,7 @@ use app_error::AppError;
 use pretty_env_logger;
 use axum::{
     response::{Html, IntoResponse},
-    routing::get,
+    routing::{get, post},
     Router,
 };
 use log::info;
@@ -16,7 +16,7 @@ use minijinja::{context, path_loader, Environment};
 use once_cell::sync::Lazy;
 use tower_http::services::ServeDir;
 
-static ENV: Lazy<Environment<'static>> = Lazy::new(|| {
+pub static ENV: Lazy<Environment<'static>> = Lazy::new(|| {
     let mut env = Environment::new();
     env.set_loader(path_loader("assets"));
     env
@@ -27,7 +27,7 @@ pub async fn main() {
     pretty_env_logger::init();
 
     let app = Router::new()
-        .route("/query/:query", get(routes::query::endpoint))
+        .route("/query", post(routes::query::endpoint))
         .route(
             "/send-to-transmission/:magnet",
             get(routes::send_to_transmission::endpoint),
