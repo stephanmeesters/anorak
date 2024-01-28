@@ -5,11 +5,13 @@ mod routes;
 mod app_error;
 use app_error::AppError;
 
+use pretty_env_logger;
 use axum::{
     response::{Html, IntoResponse},
     routing::get,
     Router,
 };
+use log::info;
 use minijinja::{context, path_loader, Environment};
 use once_cell::sync::Lazy;
 use tower_http::services::ServeDir;
@@ -22,6 +24,8 @@ static ENV: Lazy<Environment<'static>> = Lazy::new(|| {
 
 #[tokio::main]
 pub async fn main() {
+    pretty_env_logger::init();
+
     let app = Router::new()
         .route("/query/:query", get(routes::query::endpoint))
         .route(
@@ -34,7 +38,7 @@ pub async fn main() {
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{}", config::PORT))
         .await
         .unwrap();
-    println!("Anorak running on {}", listener.local_addr().unwrap());
+    info!("Anorak running on {}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }
 
