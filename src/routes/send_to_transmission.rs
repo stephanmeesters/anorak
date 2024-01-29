@@ -1,5 +1,3 @@
-use std::fmt::Debug;
-
 use crate::models;
 use crate::{app_error::AppError, config::TRANSMISSION_URL};
 
@@ -7,7 +5,6 @@ use anyhow::{Context, Result};
 use axum::debug_handler;
 use axum::{extract::Path, response::IntoResponse};
 use log::info;
-use reqwest::header::CONTENT_TYPE;
 use urlencoding::decode;
 
 fn print_request(request: &reqwest::Request, body: &str) {

@@ -4,7 +4,7 @@ use crate::app_error::AppError;
 use crate::ENV;
 
 use axum::response::Html;
-use axum::Json;
+use axum::Form;
 use axum::{
     response::IntoResponse,
     debug_handler,
@@ -15,7 +15,7 @@ use minijinja::{context, Value};
 use serde_xml_rs::from_str;
 
 #[debug_handler]
-pub async fn endpoint(Json(payload):Json<models::Query>) -> Result<impl IntoResponse, AppError> {
+pub async fn endpoint(Form(payload):Form<models::Query>) -> Result<impl IntoResponse, AppError> {
     info!("{}", &payload.search_term);
     let items = gather_items_json(&payload.search_term).await?;
     let tmpl = ENV.get_template("query.html")?;
@@ -26,9 +26,12 @@ pub async fn endpoint(Json(payload):Json<models::Query>) -> Result<impl IntoResp
 async fn gather_items_json(search_query: &str) -> Result<Value> {
     let contents = query_jackett(search_query).await?;
     let items:Vec<models::Item> = process_xml(&contents)?;
-    // let str = serde_json::to_string(&items)?;
-    //
-    let contexts:Value = items.iter().map(|it| context! { title => it.title }).collect::<Vec<_>>().into();
+
+    let contexts:Value = items.iter().map(|it| context! { 
+        title => it.title,
+        description => it.description,
+        guid => it.guid
+    }).collect::<Vec<_>>().into();
     Ok(contexts)
 }
 

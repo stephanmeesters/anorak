@@ -1,3 +1,13 @@
-{%- for item in items %}
-<li>{{ item.title }}</li>
-{%- endfor %}
+<table>
+    {%- for item in items %}
+    <tr>
+        <td>
+            {{ item.title }}
+        </td>
+
+        <td>
+            <a href="{{ item.guid}}" class="fa-solid fa-magnet"></a>
+        </td>
+    </tr>
+    {%- endfor %}
+</table>

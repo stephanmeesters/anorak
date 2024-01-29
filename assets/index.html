@@ -3,13 +3,16 @@
 
 <head>
     <script src="https://unpkg.com/htmx.org@1.9.4/dist/htmx.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <form hx-post="/query/" hx-swap="innerHTML" hx-trigger="submit">
-        <input placeholder="Search" name="search_term" id="search_term"></input>
+    <form hx-post="/query/" hx-swap="innerHTML" hx-target="#mainContent" hx-trigger="submit">
+        <input type="text" placeholder="Search" id="search_term" name="search_term"></input>
         <button type="submit">Submit</button>
     </form>
+
+    <div id="mainContent"></div>
 </body>
 
 </html>
