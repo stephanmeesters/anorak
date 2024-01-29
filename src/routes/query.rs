@@ -2,6 +2,7 @@ use crate::models;
 use crate::config::{JACKETT_URL, JACKETT_APIKEY};
 use crate::app_error::AppError;
 use crate::ENV;
+use crate::utils;
 
 use axum::response::Html;
 use axum::Form;
@@ -29,8 +30,9 @@ async fn gather_items_json(search_query: &str) -> Result<Value> {
 
     let contexts:Value = items.iter().map(|it| context! { 
         title => it.title,
-        description => it.description,
-        guid => it.guid
+        guid => it.guid,
+        pub_date => utils::format_date(&it.pub_date),
+        size => utils::format_bytes(it.size)
     }).collect::<Vec<_>>().into();
     Ok(contexts)
 }

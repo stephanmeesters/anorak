@@ -37,5 +37,5 @@ pub struct AddTorrentArguments {
 
 #[derive(Deserialize)]
 pub struct Query {
-    pub search_term: String,
+   pub search_term : String,
 }

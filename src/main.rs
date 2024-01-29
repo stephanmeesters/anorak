@@ -1,6 +1,7 @@
 mod config;
 mod models;
 mod routes;
+mod utils;
 
 mod app_error;
 use pretty_env_logger;
