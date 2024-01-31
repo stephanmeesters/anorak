@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+
     use anyhow::Result;
     use reqwest::StatusCode;
     use urlencoding::encode;
@@ -22,10 +23,16 @@ mod tests {
         let hc = httpc_test::new_client(SERVER_URL)?;
         let query =
             encode("magnet:?xt=urn:btih:7997B3932B3017C3994B527BBFB81D8D9ECAA9D9").into_owned();
-        hc.do_get(&format!("/send-to-transmission/{}", query))
-            .await?
-            .print()
+        let json_payload = format!(r#"{{ "magnet": "{}" }}"#, query);
+        let content_type = "application/x-www-form-urlencoded";
+
+        let res = hc
+            .do_post("/send-to-transmission/", (json_payload, content_type))
             .await?;
+        res.print().await?;
+
+        assert!(res.status() == StatusCode::OK);
+
         Ok(())
     }
 }

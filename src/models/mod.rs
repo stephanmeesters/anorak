@@ -39,3 +39,8 @@ pub struct AddTorrentArguments {
 pub struct Query {
    pub search_term : String,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct SendToTransmission {
+   pub magnet : String,
+}

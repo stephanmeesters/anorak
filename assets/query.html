@@ -13,7 +13,10 @@
         </td>
 
         <td>
-            <a href="{{ item.guid}}" class="fa-solid fa-magnet"></a>
+            <form hx-post="/send-to-transmission/">
+                <input type="hidden" name="magnet" value="{{ item.guid }}">
+                <button type="submit"><span class="fa-solid fa-magnet"></span></button>
+            </form>
         </td>
     </tr>
     {%- endfor %}

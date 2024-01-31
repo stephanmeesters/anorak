@@ -4,7 +4,6 @@ mod routes;
 mod utils;
 
 mod app_error;
-use pretty_env_logger;
 use axum::{
     routing::{get, post},
     Router,
@@ -12,6 +11,7 @@ use axum::{
 use log::info;
 use minijinja::{path_loader, Environment};
 use once_cell::sync::Lazy;
+use pretty_env_logger;
 use tower_http::services::ServeDir;
 
 pub static ENV: Lazy<Environment<'static>> = Lazy::new(|| {
@@ -27,8 +27,8 @@ pub async fn main() {
     let app = Router::new()
         .route("/query/", post(routes::query::endpoint))
         .route(
-            "/send-to-transmission/:magnet",
-            get(routes::send_to_transmission::endpoint),
+            "/send-to-transmission/",
+            post(routes::send_to_transmission::endpoint),
         )
         .nest_service("/", ServeDir::new("assets"));
 
