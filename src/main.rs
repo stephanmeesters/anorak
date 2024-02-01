@@ -32,7 +32,7 @@ pub async fn main() {
         )
         .nest_service("/", ServeDir::new("assets"));
 
-    let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{}", config::PORT))
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config::PORT))
         .await
         .unwrap();
     info!("Anorak running on {}", listener.local_addr().unwrap());
