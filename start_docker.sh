@@ -1,3 +1,8 @@
+docker container rm --force $(docker ps -aqf "name=anorak")
+docker image rm anorak:latest -f
+docker system prune -f
+sh build_docker.sh
+
 docker run -it -d \
     --name=anorak \
     -e PUID=1000 \
