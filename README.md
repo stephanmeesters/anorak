@@ -16,7 +16,7 @@ You can run the Docker container using the following prompt:
 docker run -it -d \
     --name=anorak \
     -e PUID=1000 \
-	  -e PGID=1000 \
+    -e PGID=1000 \
     -p 9341:9341\
     -e JACKETT_URL=[your-jackett-torznab-url] \
     -e JACKETT_APIKEY=[your-jackett-apikey] \
