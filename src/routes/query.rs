@@ -1,5 +1,5 @@
 use crate::models;
-use crate::config::{JACKETT_URL, JACKETT_APIKEY};
+use crate::config::CONFIG;
 use crate::app_error::AppError;
 use crate::ENV;
 use crate::utils;
@@ -26,7 +26,7 @@ pub async fn endpoint(Form(payload):Form<models::Query>) -> Result<impl IntoResp
 
 async fn gather_items_json(search_query: &str) -> Result<Value> {
     let contents = query_jackett(search_query).await?;
-    let items:Vec<models::Item> = process_xml(&contents)?;
+    let items:Vec<models::Item> = process_xml(&contents).unwrap_or_default();
 
     let contexts:Value = items.iter().map(|it| context! { 
         title => it.title,
@@ -38,7 +38,7 @@ async fn gather_items_json(search_query: &str) -> Result<Value> {
 }
 
 fn format_query_url(search_query: &str) -> String {
-    format!("{}/api?apikey={}&t=search&q={}", JACKETT_URL, JACKETT_APIKEY, search_query)
+    format!("{}/api?apikey={}&t=search&q={}", CONFIG.jackett_url, CONFIG.jackett_apikey, search_query)
 }
 
 async fn query_jackett(search_query: &str) -> Result<String> {

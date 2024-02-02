@@ -22,6 +22,7 @@ pub fn format_date(date_str: &str) -> String {
     }
 }
 
+#[allow(dead_code)]
 fn print_request(request: &reqwest::Request, body: &str) {
     info!(
         "Request\n\tMethod: {}\n\tURL: {}\n\tHeaders:{}\n\tBody: {}",

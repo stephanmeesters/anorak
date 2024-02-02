@@ -1,5 +1,5 @@
 use crate::models::SendToTransmission;
-use crate::{app_error::AppError, config::TRANSMISSION_URL};
+use crate::{app_error::AppError, config::CONFIG};
 
 use anyhow::{anyhow, Result};
 use axum::{debug_handler, Form};
@@ -18,7 +18,7 @@ pub async fn endpoint(
 }
 
 async fn send_transmission_impl(magnet: String) -> Result<String> {
-    let mut client = TransClient::new(TRANSMISSION_URL.parse()?);
+    let mut client = TransClient::new(CONFIG.transmission_url.parse()?);
     let add: TorrentAddArgs = TorrentAddArgs {
         filename: Some(magnet),
         ..TorrentAddArgs::default()

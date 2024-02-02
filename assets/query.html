@@ -1,23 +1,23 @@
 <table>
-    {%- for item in items %}
-    <tr>
-        <td>
-            {{ item.title }}
-        </td>
-
-        <td>
-            {{ item.size }}
-        </td>
-        <td>
-            {{ item.pub_date }}
-        </td>
-
-        <td>
-            <form hx-post="/send-to-transmission/">
-                <input type="hidden" name="magnet" value="{{ item.guid }}">
-                <button type="submit"><span class="fa-solid fa-magnet"></span></button>
-            </form>
-        </td>
-    </tr>
-    {%- endfor %}
+    {% for item in items %}
+        <tr>
+            <td>
+                {{ item.title }}
+            </td>
+            <td>
+                {{ item.size }}
+            </td>
+            <td>
+                {{ item.pub_date }}
+            </td>
+            <td>
+                <form hx-post="/send-to-transmission/" hx-swap="outerHTML">
+                    <input type="hidden" name="magnet" value="{{ item.guid }}">
+                    <button type="submit"><span class="fa-solid fa-magnet"></span></button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <p>No results found</p>
+    {% endfor %}
 </table>
