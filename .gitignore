@@ -1,2 +1,4 @@
 /target
 *.tar.gz
+set_envs.sh
+/.idea
