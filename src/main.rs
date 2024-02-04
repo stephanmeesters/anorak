@@ -37,6 +37,6 @@ pub async fn main() {
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", CONFIG.port))
         .await
         .unwrap();
-    info!("Anorak running on {}", listener.local_addr().unwrap());
+    info!("Anorak running on http://localhost:{}", CONFIG.port);
     axum::serve(listener, app).await.unwrap();
 }

@@ -1,22 +1,32 @@
-<table>
+<table class="sortable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th class="no-sort"></th>
+        </tr>
+    </thead>
+    <tbody>
     {% for item in items %}
         <tr>
             <td>
                 {{ item.title }}
             </td>
-            <td>
-                {{ item.size }}
+            <td data-sort="{{ item.size }}">
+                {{ item.size_format }}
             </td>
-            <td>
-                {{ item.pub_date }}
+            <td data-sort="{{ item.pub_date }}">
+                {{ item.pub_date_format }}
             </td>
-            <td>
+            <td class="center">
                 <form hx-post="/send-to-transmission/" hx-swap="outerHTML">
                     <input type="hidden" name="magnet" value="{{ item.guid }}">
                     <button type="submit"><span class="fa-solid fa-magnet"></span></button>
                 </form>
             </td>
         </tr>
+    </tbody>
     {% else %}
         <p>No results found</p>
     {% endfor %}

@@ -33,7 +33,7 @@ Currently Anorak does not support a user/password combo for Transmission.
 
 ## Development goals
 
-- [ ] Face-lift with CSS
+- [x] Face-lift with CSS
 - [ ] Support user/password authentication for Transmission
 - [ ] Add other torrent downloaders
 - [ ] Add configuration options within the webapp (thus removing the docker params)

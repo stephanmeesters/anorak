@@ -22,6 +22,14 @@ pub fn format_date(date_str: &str) -> String {
     }
 }
 
+pub fn format_date_unix(date_str: &str) -> String {
+    let date = DateTime::parse_from_str(date_str, "%a, %d %b %Y %H:%M:%S %z");
+    match date {
+        Ok(date_time) => date_time.timestamp().to_string(),
+        Err(_e) => date_str.to_owned()
+    }
+}
+
 #[allow(dead_code)]
 fn print_request(request: &reqwest::Request, body: &str) {
     info!(

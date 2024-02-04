@@ -3,7 +3,7 @@ use crate::{app_error::AppError, config::CONFIG};
 
 use anyhow::{anyhow, Result};
 use axum::{debug_handler, Form};
-use axum::response::IntoResponse;
+use axum::response::{Html, IntoResponse};
 use transmission_rpc::types::TorrentAddArgs;
 use transmission_rpc::TransClient;
 use urlencoding::decode;
@@ -13,8 +13,8 @@ pub async fn endpoint(
     Form(magnet): Form<SendToTransmission>,
 ) -> Result<impl IntoResponse, AppError> {
     let decoded = decode(&magnet.magnet)?.into_owned();
-    let result = send_transmission_impl(decoded).await?;
-    Ok(result)
+    send_transmission_impl(decoded).await?;
+    Ok(Html("<span class=\"fa-solid fa-check\"></span>"))
 }
 
 async fn send_transmission_impl(magnet: String) -> Result<String> {

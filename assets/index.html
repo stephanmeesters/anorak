@@ -2,16 +2,18 @@
 <html>
 
 <head>
+    <title>Anorak Search</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/htmx.org@1.9.4/dist/htmx.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://kit.fontawesome.com/48f6fc2f0a.js" crossorigin="anonymous" async></script>
 </head>
 
 <body>
     <form hx-post="/query/" hx-swap="innerHTML" hx-target="#mainContent" hx-trigger="submit">
-        <input type="text" placeholder="Search" id="search_term" name="search_term"></input>
-        <button type="submit">Submit</button>
+        <div class="search">
+            <input type="text" placeholder="search..." id="search_term" name="search_term">
+        </div>
     </form>
-
     <div id="mainContent"></div>
 </body>
 

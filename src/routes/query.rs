@@ -31,8 +31,10 @@ async fn gather_items_json(search_query: &str) -> Result<Value> {
     let contexts:Value = items.iter().map(|it| context! { 
         title => it.title,
         guid => it.guid,
-        pub_date => utils::format_date(&it.pub_date),
-        size => utils::format_bytes(it.size)
+        pub_date => utils::format_date_unix(&it.pub_date),
+        pub_date_format => utils::format_date(&it.pub_date),
+        size => it.size,
+        size_format => utils::format_bytes(it.size)
     }).collect::<Vec<_>>().into();
     Ok(contexts)
 }
