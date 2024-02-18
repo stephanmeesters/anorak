@@ -1,2 +1,1 @@
-docker build -t anorak .
-# docker build -t anorak . --progress=plain --no-cache
+docker build -t stephanm123/anorak .

@@ -9,12 +9,14 @@
 </head>
 
 <body>
-    <form hx-post="/query/" hx-swap="innerHTML" hx-target="#mainContent" hx-trigger="submit">
-        <div class="search">
-            <input type="text" placeholder="search..." id="search_term" name="search_term">
-        </div>
-    </form>
-    <div id="mainContent"></div>
+    <div id="container">
+        <form hx-post="/query/" hx-swap="innerHTML" hx-target="#mainContent" hx-trigger="submit">
+            <div class="search">
+                <input type="text" placeholder="search..." id="search_term" name="search_term">
+            </div>
+        </form>
+        <div id="mainContent"></div>
+    </div>
 </body>
 
 </html>

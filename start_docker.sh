@@ -8,4 +8,4 @@ docker run -it -d \
     -e JACKETT_URL=http://192.168.2.10:9117/api/v2.0/indexers/thepiratebay/results/torznab \
     -e JACKETT_APIKEY=qjr3cgynmdxzlgwpdjv3x5pwxohzx3zi \
     -e TRANSMISSION_URL=http://192.168.2.10:9091/transmission/rpc \
-    anorak:latest
+    stephanm123/anorak:latest

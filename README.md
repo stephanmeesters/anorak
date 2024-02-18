@@ -25,18 +25,18 @@ docker run -it -d \
     stephanm123/anorak:latest
 ```
 
-- JACKETT_URL is for example http://192.168.2.10:9117/api/v2.0/indexers/sometorrentprovider/results/torznab
+- JACKETT_URL is for example `http://192.168.2.10:9117/api/v2.0/indexers/sometorrentprovider/results/torznab`
 - JACKETT_APIKEY can be obtained from the Jackett page
-- TRANSMISSION_URL is for example http://192.168.2.10:9091/transmission/rpc
+- TRANSMISSION_URL is for example `http://192.168.2.10:9091/transmission/rpc`
 
 Currently Anorak does not support a user/password combo for Transmission.
 
 ## Development goals
 
 - [x] Face-lift with CSS
+- [x] Indicate which torrents are already grabbed
 - [ ] Support user/password authentication for Transmission
 - [ ] Add other torrent downloaders
 - [ ] Add configuration options within the webapp (thus removing the docker params)
-- [ ] Indicate which torrents are already grabbed
 - [ ] Indicate free space on the server
 - [ ] Indicate number of seeds/peer and other useful info

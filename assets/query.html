@@ -1,3 +1,4 @@
+{% if items is defined and items|length > 0 %}
 <table class="sortable">
     <thead>
         <tr>
@@ -8,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for item in items %}
+        {% for item in items %}
         <tr>
             <td>
                 {{ item.title }}
@@ -20,14 +21,19 @@
                 {{ item.pub_date_format }}
             </td>
             <td class="center">
+                {% if item.already_added %}
+                <span class="fa-solid fa-check"></span>
+                {% else %}
                 <form hx-post="/send-to-transmission/" hx-swap="outerHTML">
                     <input type="hidden" name="magnet" value="{{ item.guid }}">
                     <button type="submit"><span class="fa-solid fa-magnet"></span></button>
                 </form>
+                {% endif %}
             </td>
         </tr>
+        {% endfor %}
     </tbody>
-    {% else %}
-        <p>No results found</p>
-    {% endfor %}
 </table>
+{% else %}
+<p>No results found</p>
+{% endif %}
