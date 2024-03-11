@@ -5,6 +5,8 @@ Its purpose is to be a general purpose Torrent grabber, as opposed to specialize
 
 Developed using Rust / Axum / MiniJinja / HTMX
 
+![image](https://github.com/stephanmeesters/anorak/assets/14291421/207256dc-20e0-4d63-bef7-844ca1f315ec)
+
 ## How to use
 
 - Install Jackett - https://docs.linuxserver.io/images/docker-jackett/
