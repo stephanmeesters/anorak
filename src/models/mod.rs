@@ -21,6 +21,16 @@ pub struct Item {
     pub files: u32,
     pub description: String,
     pub category: Vec<String>,
+    #[serde(rename = "torznab:attr")]
+    pub torznab_attrs: Option<Vec<TorznabAttr>>,    
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct TorznabAttr {
+    #[serde(rename = "@name")]
+    pub name: String,
+    #[serde(rename = "@value")]
+    pub value: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

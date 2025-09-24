@@ -3,6 +3,8 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Seeders</th>
+            <th>Peers</th>
             <th>Size</th>
             <th>Date</th>
             <th class="no-sort"></th>
@@ -13,6 +15,12 @@
         <tr>
             <td>
                 {{ item.title }}
+            </td>
+            <td data-sort="{{ item.seeders }}">
+                {{ item.seeders }}
+            </td>
+            <td data-sort="{{ item.peers }}">
+                {{ item.peers }}
             </td>
             <td data-sort="{{ item.size }}">
                 {{ item.size_format }}

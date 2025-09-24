@@ -1,4 +1,3 @@
-
 use crate::app_error::AppError;
 use crate::config::CONFIG;
 use crate::models;
@@ -26,14 +25,32 @@ pub async fn endpoint(Form(payload): Form<models::Query>) -> Result<impl IntoRes
 
 async fn gather_items_json(search_query: &str) -> Result<Value> {
     let contents = query_jackett(search_query).await?;
+    println!("{:?}", contents);
     let items: Vec<models::Item> = process_xml(&contents).unwrap_or_default();
     let known_torrents = request_transmission_known_torrents().await?;
 
     let contexts: Value = items
         .iter()
         .map(|it| {
+            let (seeders, peers) = match &it.torznab_attrs {
+                Some(attrs) => {
+                    let mut seeders: u32 = 0;
+                    let mut peers: u32 = 0;
+                    for a in attrs {
+                        if a.name.eq_ignore_ascii_case("seeders") {
+                            if let Ok(v) = a.value.parse::<u32>() { seeders = v; }
+                        } else if a.name.eq_ignore_ascii_case("peers") || a.name.eq_ignore_ascii_case("leechers") {
+                            if let Ok(v) = a.value.parse::<u32>() { peers = v; }
+                        }
+                    }
+                    (seeders, peers)
+                }
+                None => (0, 0),
+            };
             context! {
                 already_added => known_torrents.iter().any(|t| t.contains(&it.title)),
+                seeders => seeders,
+                peers => peers,
                 title => it.title,
                 guid => it.guid,
                 pub_date => utils::format_date_unix(&it.pub_date),
@@ -58,8 +75,10 @@ async fn request_transmission_known_torrents() -> Result<Vec<String>> {
 
 fn format_query_url(search_query: &str) -> String {
     format!(
-        "{}/api?apikey={}&t=search&q={}",
-        CONFIG.jackett_url, CONFIG.jackett_apikey, search_query
+        "{}/api?apikey={}&t=search&extended=1&q={}",
+        CONFIG.jackett_url,
+        CONFIG.jackett_apikey,
+        urlencoding::encode(search_query)
     )
 }
 
