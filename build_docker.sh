@@ -1,1 +1,1 @@
-docker build -t stephanm123/anorak .
+podman build -t stephanm123/anorak .

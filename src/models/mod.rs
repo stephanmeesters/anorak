@@ -11,28 +11,29 @@ pub struct Channel {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct Attr {
+    pub name: String,
+    pub value: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Item {
     pub title: String,
     pub guid: String,
+    #[serde(default)]
     pub comments: String,
     #[serde(rename = "pubDate")]
     pub pub_date: String,
+    #[serde(default)]
     pub size: u64,
+    #[serde(default)]
     pub files: u32,
+    #[serde(default)]
     pub description: String,
+    #[serde(default)]
     pub category: Vec<String>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct TransmissionAddTorrent {
-    pub method: String,
-    // pub arguments: AddTorrentArguments,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct AddTorrentArguments {
-    pub paused: bool,
-    pub filename: String,
+    #[serde(rename = "attr", default)]
+    pub attrs: Vec<Attr>,
 }
 
 #[derive(Deserialize)]

@@ -1,4 +1,4 @@
-FROM rust:1.75-buster as builder
+FROM rust:1.91.1-trixie as builder
 
 WORKDIR /usr/src/
 
@@ -22,7 +22,7 @@ RUN cargo build --release
 ### deploy
 
 # bullseye is required for libssl 1.1.1
-FROM debian:bullseye-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y openssl
 

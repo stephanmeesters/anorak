@@ -37,26 +37,24 @@ body {
 
 #mainContent {
     font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
     width: 100%;
-    display: flex;
     border: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
 }
 
 #mainContent table {
     width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 
 #mainContent td,
 #mainContent th {
     padding: 8px;
     color: #3B373B;
-    width: 100%;
 }
 
 #mainContent tbody tr:hover {
@@ -74,4 +72,51 @@ body {
 
 .center {
     text-align: center;
+}
+
+/* Column sizing */
+#mainContent th.name,
+#mainContent td.name {
+    max-width: 480px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+#mainContent td.name.expanded {
+    max-width: none;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: visible;
+    overflow-wrap: anywhere;
+}
+
+#mainContent th.seeders,
+#mainContent td.seeders {
+    width: 120px;
+    white-space: nowrap;
+}
+
+#mainContent th.size,
+#mainContent td.size {
+    width: 140px;
+    white-space: nowrap;
+}
+
+#mainContent th.date,
+#mainContent td.date {
+    width: 160px;
+    white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+    #mainContent table {
+        min-width: 520px;
+    }
+
+    #mainContent th.name,
+    #mainContent td.name {
+        max-width: 320px;
+    }
 }

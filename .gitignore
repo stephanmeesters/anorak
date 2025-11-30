@@ -2,3 +2,5 @@
 *.tar.gz
 set_envs.sh
 /.idea
+.cargo
+.cargo_home

@@ -37,8 +37,4 @@ Currently Anorak does not support a user/password combo for Transmission.
 
 - [x] Face-lift with CSS
 - [x] Indicate which torrents are already grabbed
-- [ ] Support user/password authentication for Transmission
-- [ ] Add other torrent downloaders
-- [ ] Add configuration options within the webapp (thus removing the docker params)
-- [ ] Indicate free space on the server
-- [ ] Indicate number of seeds/peer and other useful info
+- [x] Indicate number of seeds/peer and other useful info

@@ -2,22 +2,26 @@
 <table class="sortable">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Date</th>
+            <th class="name" data-sort-key="name" data-sort-type="string">Name</th>
+            <th class="seeders" data-sort-key="seeders" data-sort-type="number">S/P</th>
+            <th class="size" data-sort-key="size" data-sort-type="number">Size</th>
+            <th class="date" data-sort-key="date" data-sort-type="date">Date</th>
             <th class="no-sort"></th>
         </tr>
     </thead>
     <tbody>
         {% for item in items %}
         <tr>
-            <td>
+            <td class="name" title="{{ item.title }}">
                 {{ item.title }}
             </td>
-            <td data-sort="{{ item.size }}">
+            <td class="seeders" data-sort="{{ item.seeders }}">
+                {{ item.seeders }} / {{ item.peers }}
+            </td>
+            <td class="size" data-sort="{{ item.size }}">
                 {{ item.size_format }}
             </td>
-            <td data-sort="{{ item.pub_date }}">
+            <td class="date" data-sort="{{ item.pub_date }}">
                 {{ item.pub_date_format }}
             </td>
             <td class="center">
@@ -37,3 +41,41 @@
 {% else %}
 <p>No results found</p>
 {% endif %}
+
+<script>
+(() => {
+    const table = document.querySelector('#mainContent table');
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const headers = table.querySelectorAll('th[data-sort-key]');
+    let current = { key: null, dir: 1 };
+
+    const getValue = (cell, type) => {
+        const raw = cell?.dataset.sort ?? cell?.textContent ?? '';
+        if (type === 'number') return Number(raw) || 0;
+        if (type === 'date') return Number(raw) || Date.parse(raw) || 0;
+        return raw.toLowerCase();
+    };
+
+    const sortRows = (key, type) => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const dir = current.key === key ? -current.dir : -1; // default desc for numbers
+        current = { key, dir };
+        rows.sort((a, b) => {
+            const aCell = a.querySelector(`td.${key}`) ?? a.cells[0];
+            const bCell = b.querySelector(`td.${key}`) ?? b.cells[0];
+            const av = getValue(aCell, type);
+            const bv = getValue(bCell, type);
+            if (av < bv) return dir;
+            if (av > bv) return -dir;
+            return 0;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+    };
+
+    headers.forEach(h => {
+        h.style.cursor = 'pointer';
+        h.addEventListener('click', () => sortRows(h.dataset.sortKey, h.dataset.sortType));
+    });
+})();
+</script>

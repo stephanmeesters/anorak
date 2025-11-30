@@ -26,16 +26,37 @@ pub async fn endpoint(Form(payload): Form<models::Query>) -> Result<impl IntoRes
 
 async fn gather_items_json(search_query: &str) -> Result<Value> {
     let contents = query_jackett(search_query).await?;
-    let items: Vec<models::Item> = process_xml(&contents).unwrap_or_default();
+    let mut items: Vec<models::Item> = process_xml(&contents).unwrap_or_default();
     let known_torrents = request_transmission_known_torrents().await?;
+
+    let attr_as_u32 = |attrs: &[models::Attr], name: &str| -> u32 {
+        attrs
+            .iter()
+            .find(|a| a.name == name)
+            .and_then(|a| a.value.parse::<u32>().ok())
+            .unwrap_or(0)
+    };
+
+    // Default sort: highest seeders first, then peers.
+    items.sort_by(|a, b| {
+        let a_seeders = attr_as_u32(&a.attrs, "seeders");
+        let b_seeders = attr_as_u32(&b.attrs, "seeders");
+        b_seeders
+            .cmp(&a_seeders)
+            .then_with(|| attr_as_u32(&b.attrs, "peers").cmp(&attr_as_u32(&a.attrs, "peers")))
+    });
 
     let contexts: Value = items
         .iter()
         .map(|it| {
+            let seeders = attr_as_u32(&it.attrs, "seeders");
+            let peers = attr_as_u32(&it.attrs, "peers");
             context! {
                 already_added => known_torrents.iter().any(|t| t.contains(&it.title)),
                 title => it.title,
                 guid => it.guid,
+                seeders => seeders,
+                peers => peers,
                 pub_date => utils::format_date_unix(&it.pub_date),
                 pub_date_format => utils::format_date(&it.pub_date),
                 size => it.size,

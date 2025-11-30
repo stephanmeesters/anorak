@@ -12,11 +12,35 @@
     <div id="container">
         <form hx-post="/query/" hx-swap="innerHTML" hx-target="#mainContent" hx-trigger="submit">
             <div class="search">
-                <input type="text" placeholder="search..." id="search_term" name="search_term">
+                <input type="text" placeholder="search..." id="search_term" name="search_term" autofocus>
             </div>
         </form>
         <div id="mainContent"></div>
     </div>
+
+    <script>
+        (() => {
+            const main = document.querySelector('#mainContent');
+            if (!main) return;
+
+            let expandedCell = null;
+            document.body.addEventListener('click', (event) => {
+                const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+                const cell = target?.closest('#mainContent td.name');
+                if (!cell || !main.contains(cell)) return;
+
+                if (expandedCell && expandedCell !== cell) {
+                    expandedCell.classList.remove('expanded');
+                }
+
+                if (cell.classList.toggle('expanded')) {
+                    expandedCell = cell;
+                } else {
+                    expandedCell = null;
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

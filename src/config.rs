@@ -6,7 +6,9 @@ pub struct Config {
     pub jackett_url : String,
     pub jackett_apikey: String,
     pub transmission_url: String,
+    #[allow(dead_code)]
     pub transmission_username: Option<String>,
+    #[allow(dead_code)]
     pub transmission_password: Option<String>,
 }
 
@@ -20,4 +22,3 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| {
         transmission_password: env::var("TRANSMISSION_PASSWORD").ok(),
     }
 });
-
